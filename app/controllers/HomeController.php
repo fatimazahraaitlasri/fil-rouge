@@ -8,5 +8,6 @@ class HomeController
     }
     public function index()
     {
+        // create index page
     }
 }
