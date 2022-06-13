@@ -5,9 +5,17 @@ class HomeController
 
     public function __construct()
     {
+        $this->userModel = new User;
+
+
     }
     public function index()
     {
-        // create index page
+        return view("home");
+    }
+
+    public function tester()
+    {
+        return view("tester");
     }
 }

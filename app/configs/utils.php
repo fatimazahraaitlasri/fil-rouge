@@ -1,13 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Jenssegers\Blade\Blade;
 
 /**
- * retour fichier view  
+ * retour fichier view  (method ancienne)
  * @param string $path chemin du fichier view après /resources/views
  * @param array $data tableau à décompresser dans view(html)
  */
-function view($path, $data = [])
+function oldView($path, $data = [])
 {
 
     extract($data);
@@ -15,12 +16,32 @@ function view($path, $data = [])
     include dirname(__DIR__) . "/resources/views/$path.php";
 }
 
-function bladeView($path, $data = [])
+/**
+ * retour fichier view  (method nouveau)
+ * @param string $path chemin du fichier view après /resources/views
+ * @param array $data tableau à décompresser dans view(html)
+ */
+function view(string $path, array $data = []): void
 {
     $views = dirname(__DIR__) . "/resources/views";
     $cache = dirname(__DIR__) . "/cache/views";
 
     $blade = new Blade($views, $cache);
+
+    $blade->directive("styles", function ($file) {
+        $file = trim($file, "/");
+        return "<?php \$__env->startPush('styles'); ?>
+        <link rel='stylesheet' href='css/<?=$file;?>.css'>
+        <?php \$__env->stopPush(); ?>
+    ";
+    });
+
+    $blade->directive("scripts", function ($file) {
+        $file = ltrim($file, "/");
+        return "<?php \$__env->startPush('scripts'); ?>
+        <script src='js/<?=$file;?>.js'></script>
+        <?php \$__env->stopPush(); ?>";
+    });
 
     echo $blade->render($path, $data);
 }
@@ -36,6 +57,20 @@ function component($path, $data = [])
 {
     view("/components/$path", $data);
 }
+
+
+/**
+ * afficher clairement les données et arrêter l'exécution
+ * @param mixed ...$data
+ * 
+ * @return [type]
+ */
+function dd(...$data)
+{
+    dump(...$data);
+    die();
+}
+
 
 
 
@@ -68,6 +103,18 @@ function verify($requiredFields, $data): bool
 }
 
 
+/**
+ * convertir les slashs (/) en backslashes (\)
+ * @param string $path
+ * 
+ * @return [type]
+ */
+function normalizePath($path)
+{
+
+    return str_replace("/", "\\", $path);
+}
+
 
 
 /**
@@ -83,7 +130,12 @@ function isLoggedIn()
 }
 
 
-function logout(){
+
+
+
+
+function logout()
+{
     isLoggedIn();
     session_destroy();
 }
@@ -100,7 +152,8 @@ function logout(){
 //  */
 function currentUserRole()
 {
-    if (!isLoggedIn()) return null;
+    if (!isLoggedIn())
+        return null;
     return $_SESSION["role"];
 }
 
@@ -126,8 +179,10 @@ function createPatientSession($patient)
     $_SESSION["currentPatient"] = $patient;
 }
 
-function currentPatient(){
-    if(!isLoggedIn()) return null;
+function currentPatient()
+{
+    if (!isLoggedIn())
+        return null;
     return $_SESSION["currentPatient"];
 }
 

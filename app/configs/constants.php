@@ -5,7 +5,7 @@ define("MIDDLEWARE", "middleware");
 
 define("DB_NAME", "filerouge");
 define("DB_USERNAME", "root");
-define("DB_PASSWORD", "password");
+define("DB_PASSWORD", "");
 
 
 $arr = explode("\\", dirname(dirname(__DIR__)));

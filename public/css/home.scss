@@ -1,0 +1,87 @@
+@import "mixins";
+
+@include mobile {
+    .home
+    {
+        height: 100vh;
+        position: absolute;
+        top: 50px;
+        
+        
+    }
+    .form-row
+    {
+    
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // gap: 10px;
+    // &>div{
+    //  display:flex;
+    //  gap:0.5rem;
+    //  padding: 0.5rem;
+    //  justify-content: center;
+    //  align-items: center;
+    //  background-color: rgb(42, 18, 198) !important;
+    //  position: absolute;
+    // width: 100vh;
+    // top: 1rem;
+    //  background-color: aliceblue;
+
+    
+     
+    // }
+   
+}
+
+
+.home{
+    height: 100vh;
+    /* width: 100vw; */
+    background-image: url("https://images.pexels.com/photos/297984/pexels-photo-297984.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    /* background-image: url("https://images.pexels.com/photos/804878/pexels-photo-804878.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"); */
+    background-size:cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    margin-left: 60px;
+    margin-right: 60px;
+    border-radius: 10px;
+    
+}
+.form-row
+{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    &>div{
+     display:flex;
+     gap:0.5rem;
+     padding: 0.5rem;
+     justify-content: center;
+     align-items: center;
+     background-color: aliceblue;
+
+    
+     
+    }
+
+
+    .form-control 
+    {
+        border-radius: 0px;
+        flex: 1;
+        opacity: 0.9;
+        border: none; 
+        // background-color: rgb(64, 165, 223);
+        // outline: none;
+        
+    //  background-color: rebeccapurple;
+
+        
+    }
+    
+
+}}
