@@ -9,13 +9,14 @@ class HomeController
 
 
     }
+
     public function index()
     {
-        return view("home");
+        return view("app");
     }
 
     public function tester()
     {
-        return view("tester");
+        return view("app");
     }
 }

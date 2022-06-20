@@ -1,0 +1,15 @@
+@import "mixins";
+
+@include mobile {
+  .home {
+    height: 100vh;
+    position: absolute;
+    top: 50px;
+    background-color: red;
+  }
+
+}
+
+
+
+

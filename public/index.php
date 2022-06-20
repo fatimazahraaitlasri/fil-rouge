@@ -4,11 +4,7 @@ require_once dirname(__DIR__) . "/app/configs/index.php";
 require_once "autoload.php";
 
 require_once dirname(__DIR__) . "/vendor/autoload.php";
-
-
-
-
-
+//require_once dirname(__DIR__) . "/public/css/home.css";
 
 $params = ["home"];
 
@@ -17,7 +13,6 @@ if (isset($_GET["url"])) {
     $url = $_GET["url"];
     $params = explode("/", rtrim($url, "/"));
 }
-
 
 
 function serve($param)
@@ -37,12 +32,11 @@ function serve($param)
                 return;
             }
         }
-    }
-    elseif (isset($param[0])) {
+    } elseif (isset($param[0])) {
         $newParams = ["home", ...$param];
         return serve($newParams);
     }
-    echo "404 not found";
+    return view("app");
 }
 
 serve($params);

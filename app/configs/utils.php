@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Jenssegers\Blade\Blade;
 
 /**
@@ -21,7 +20,7 @@ function oldView($path, $data = [])
  * @param string $path chemin du fichier view après /resources/views
  * @param array $data tableau à décompresser dans view(html)
  */
-function view(string $path, array $data = []): void
+function view(string $path, array $data = []): bool
 {
     $views = dirname(__DIR__) . "/resources/views";
     $cache = dirname(__DIR__) . "/cache/views";
@@ -44,6 +43,7 @@ function view(string $path, array $data = []): void
     });
 
     echo $blade->render($path, $data);
+    return true;
 }
 
 function json($data = [])
@@ -62,7 +62,7 @@ function component($path, $data = [])
 /**
  * afficher clairement les données et arrêter l'exécution
  * @param mixed ...$data
- * 
+ *
  * @return [type]
  */
 function dd(...$data)
@@ -70,8 +70,6 @@ function dd(...$data)
     dump(...$data);
     die();
 }
-
-
 
 
 /**
@@ -83,13 +81,11 @@ function isPostRequest()
 }
 
 
-
-
 /**
  * vérifier si le tableau a des champs obligatoires
  * @param array $requiredFields champs obligatoires
  * @param array $data tableau associatif de données
- * 
+ *
  * @return bool
  */
 function verify($requiredFields, $data): bool
@@ -106,7 +102,7 @@ function verify($requiredFields, $data): bool
 /**
  * convertir les slashs (/) en backslashes (\)
  * @param string $path
- * 
+ *
  * @return [type]
  */
 function normalizePath($path)
@@ -116,10 +112,9 @@ function normalizePath($path)
 }
 
 
-
 /**
  * vérifier si l'utilisateur est connecté ou non
- * @return [type] 
+ * @return [type]
  */
 function isLoggedIn()
 {
@@ -130,20 +125,11 @@ function isLoggedIn()
 }
 
 
-
-
-
-
 function logout()
 {
     isLoggedIn();
     session_destroy();
 }
-
-
-
-
-
 
 
 // /**
@@ -167,7 +153,7 @@ function currentPatientRef()
     return $_SESSION[MAIN_PATIENT_KEY] ?? null; // nullish coalascing  
 }
 
-/** 
+/**
  * créer une session pour patient par son reference
  */
 function createPatientSession($patient)
@@ -187,14 +173,10 @@ function currentPatient()
 }
 
 
-
-
-
-
 /**
- * redirect vers un chemin spécifié 
+ * redirect vers un chemin spécifié
  * @param string $path chemin aprés /{PROJECT_NAME}/
- * 
+ *
  * @return [type]
  */
 function redirect($path)
@@ -207,7 +189,7 @@ function redirect($path)
 /**
  * générer une chaîne aléatoire avec une longueur choisie
  * @param int $length
- * 
+ *
  * @return [type]
  */
 function generateRandomString($length = 10)
@@ -222,15 +204,20 @@ function generateRandomString($length = 10)
 }
 
 
-
 /**
  * créez un lien après /{PROJECT_NAME}/
  * @param mixed $path
- * 
+ *
  * @return [type]
  */
 function createLink($path)
 {
     $path = trim($path, "/");
     return "/" . PROJECT_NAME . "/$path";
+}
+
+
+function asset($path)
+{
+    return $path;
 }

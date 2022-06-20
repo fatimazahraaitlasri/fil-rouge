@@ -1,0 +1,97 @@
+classDiagram
+direction TB
+
+User "1.1" --> "0..*" Comment
+User "1.1" --> "0..*" Rating
+User "1.1" --> "0..*" Favorite
+User "1.1" --> "0..*" Complaint
+
+Owner "1.1" --> "1..*" Property
+Owner "1.1" --> "0..*" Complaint
+
+Admin --> "all" User: Manage
+Admin --> "all" Owner: Manage
+
+
+class BaseUser
+BaseUser:-int id
+BaseUser:-string password
+BaseUser:-string email
+BaseUser:+string firstName
+BaseUser:+string lastName
+BaseUser:+login(data)
+BaseUser:+register(data)
+
+BaseUser <|-- Owner
+BaseUser <|-- User
+
+
+class BaseChild
+BaseChild:-int id
+BaseChild:-int authorId
+BaseChild:+getAuthor()
+
+BaseChild <|-- Comment
+BaseChild <|-- Property
+BaseChild <|-- Favorite
+BaseChild <|-- Complaint
+
+
+class Comment{
+    +string text
+}
+
+class Favorite{
+    -int propertyId
+    +getProperty()
+}
+
+class Property {
+    +int id
+    -int ownerId
+    +List~string~ images
+    +string description
+    +string location
+    +float rating
+    +float price
+    +boolean verified
+    +getOwner()
+}
+
+
+class User{
+    +addComment(int propertyId, string comment)
+    +removeComment(int commentId)
+    +editComment(int commentId, string newComment)
+    +addComplaint(int propertyId, string complaint)
+    +addRating(int propertyId, float rating)
+    +removeRating(int ratingId)
+}
+
+class Rating {
+    +float value
+}
+
+
+class Complaint {
+    +string message
+}
+
+class Admin {
+    -int id
+    -string username
+    -string password
+    +login(data)
+    +removeAccount(int accountId)
+    +editAccount(int accountId, updates)
+}
+
+
+class Owner {
+    +addProperty(propertyData)
+    +removeProperty(int propertyId)
+    +updateProperty(int propertyId, updates)
+    +addComplaint(int propertyId, string complaint)
+}
+
+
