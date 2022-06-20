@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navigation/>
+    <Navigation v-if="!isHome"/>
     <router-view/>
     <div>footer</div>
   </div>
@@ -13,6 +13,11 @@ import Navigation from "./Navigation";
 export default {
   name: "App",
   components: {Navigation},
+  computed: {
+    isHome() {
+      return this.$route.fullPath === "/";
+    }
+  }
 }
 </script>
 

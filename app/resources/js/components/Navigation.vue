@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <div :class="['nav', light && 'light']">
     <router-link to="/" class="logo">Bbrikk</router-link>
     <div class="links">
       <router-link to="/hotels">hotels</router-link>
@@ -15,7 +15,9 @@
   </div>
 </template>
 <script>
+
 export default {
+  props: ["light"],
   name: "Navigation"
 }
 </script>
@@ -51,6 +53,7 @@ export default {
     }
   }
 
+
   .auth {
     display: flex;
     gap: 1rem;
@@ -58,7 +61,7 @@ export default {
 
     .login {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
       align-items: center;
 
       .text {
@@ -80,6 +83,7 @@ export default {
       text-transform: capitalize;
       transition: all .2s ease;
 
+
       &:hover {
         background-color: $primary-highlight-color;
       }
@@ -98,5 +102,11 @@ export default {
       }
     }
   }
+
+
+}
+
+.light {
+  color: white;
 }
 </style>
