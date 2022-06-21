@@ -3,7 +3,7 @@
     <router-link to="/" class="logo">Bbrikk</router-link>
     <div class="links">
       <router-link to="/hotels">hotels</router-link>
-      <router-link to="/apartements">apartements</router-link>
+      <router-link to="/apartments">apartments</router-link>
     </div>
     <div class="auth">
       <router-link to="/login" class="login">

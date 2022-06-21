@@ -46,10 +46,11 @@ function view(string $path, array $data = []): bool
     return true;
 }
 
-function json($data = [])
+function json($data = []): bool
 {
     header("Content-Type: application/json");
     echo json_encode($data);
+    return true;
 }
 
 
@@ -220,4 +221,28 @@ function createLink($path)
 function asset($path)
 {
     return $path;
+}
+
+function isowner(): bool
+{
+    return currentUserRole() === OWNER;
+}
+
+
+/**
+ * recevoir les données de la requête soit par formulaire soit par format json
+ * @return array
+ */
+function getBody(): array
+{
+    if (count($_POST)) {
+        return $_POST;
+    }
+    $jsonData = file_get_contents('php://input');
+    return json_decode($jsonData);
+}
+
+function query($key)
+{
+    return $_GET[$key] ?? null;
 }

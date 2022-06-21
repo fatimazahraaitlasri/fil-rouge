@@ -12,6 +12,12 @@
 <body>
 <div id="app">
 </div>
+@if($data ?? null)
+    <script type="application/json" id="app_data">
+        {!! json_encode($data) !!}
+    </script>
+@endif
 <script src="js/app.js"></script>
+
 </body>
 </html>

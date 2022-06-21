@@ -1,7 +1,7 @@
 <template>
   <div class="hotels">
     <div class="entities">
-      <h2>Hotels</h2>
+      <h2>Apartments</h2>
       <p class="text">Donec vitae dignissim magna, viverra semper justo. Cras blandit enim blandit porta elementum.</p>
       <div class="list">
         <CardItem v-for="apartment in apartments" :key="apartment.id" :data="apartment"/>

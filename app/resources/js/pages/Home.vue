@@ -17,24 +17,35 @@
         </div>
       </form>
     </div>
-    <div class="rents">
+    <div class="entities">
       <h2>Apartments in Marrakech</h2>
-      <p class="text">bla bla bla</p>
+      <p class="text">Donec vitae dignissim magna, viverra semper justo. Cras blandit enim blandit porta elementum.</p>
       <div class="list">
-        <Card v-for="apartment in apartments" :key="apartment.id" :data="apartment"/>
+        <CardItem v-for="apartment in apartments" :key="apartment.id" :data="apartment"/>
       </div>
     </div>
+
+    <div class="entities">
+      <h2>Hotels in Marrakech</h2>
+      <p class="text">Donec vitae dignissim magna, viverra semper justo. Cras blandit enim blandit porta elementum.</p>
+      <div class="list">
+        <CardItem v-for="apartment in apartments" :key="apartment.id" :data="apartment"/>
+      </div>
+    </div>
+    {{ result }}
   </div>
 </template>
 
 <script>
 import Navigation from "../components/Navigation";
+import CardItem from "../components/CardItem";
 
 export default {
   name: "Home",
-  components: {Navigation},
+  components: {CardItem, Navigation},
   data() {
     return {
+      result: [],
       filter: {
         location: "",
         date: undefined,
@@ -49,10 +60,16 @@ export default {
       }).map((v, i) => ({...v, id: i}))
     }
   },
+  mounted() {
+    this.getAllApartments();
+  },
 
   methods: {
     handleSubmit() {
       console.log(this.filter)
+    },
+    async getAllApartments() {
+
     }
   }
 }
@@ -139,6 +156,38 @@ export default {
       @include desktop {
         padding: 1.5rem;
       }
+    }
+  }
+}
+
+.entities {
+  margin: 2rem 0;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  @include desktop {
+    margin: 3rem 0;
+    padding: 1.5rem 3rem;
+  }
+
+  h2 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .text {
+    margin-bottom: 1rem;
+    @include desktop {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .list {
+    display: grid;
+    gap: 3rem;
+    @include desktop {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }

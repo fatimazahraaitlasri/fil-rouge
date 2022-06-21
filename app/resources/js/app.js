@@ -9,6 +9,8 @@ import About from "./pages/About";
 import Hotels from "./pages/Hotels";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Apartments from "./pages/Apartments";
+import PropertyDetails from "./pages/PropertyDetails";
 
 
 const app = createApp(App);
@@ -17,14 +19,21 @@ const routes = [
     {path: "/", component: Home},
     {path: "/about", component: About},
     {path: "/hotels", component: Hotels},
+    {path: "/apartments", component: Apartments},
     {path: "/login", component: Login},
     {path: "/register", component: Register},
+    {path: "/properties/:property", component: PropertyDetails},
 ]
 
 const router = createRouter({
     history: createWebHistory("/fil-rouge-youcode"),
     routes,
 })
+
+const dataScript = document.querySelector("#app_data");
+if (dataScript) {
+    app.config.globalProperties.$data = JSON.parse(dataScript.textContent);
+}
 
 
 app.use(router)

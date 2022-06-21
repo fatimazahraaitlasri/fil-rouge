@@ -23,8 +23,5 @@ export default {
 
 <style>
 
-.main {
-  background-color: purple;
-}
 
 </style>
