@@ -1,20 +1,14 @@
-<div class="navigation">
-    <div>logo</div>
+<div @class(["nav", "light" => $light])>
+    <a href="{{createLink('/')}}" class=" logo">Bbrikk</a>
     <div class="links">
-        <a href="/hotels">hotels</a>
-        <a href="/apartments">apartments</a>
+        <a href="{{createLink('/hotels')}}">hotels</a>
+        <a href="{{createLink('/apartments')}}">apartments</a>
     </div>
-
     <div class="auth">
-        @if(Auth::check())
-            <a href="/logout">logout</a>
-        @else
-            <a href="/login">login</a>
-        @endif
-        <a href="/host">
+        <a href="{{createLink('/login')}}" class="login">
             <i class="fas fa-user"></i>
-            host your place
+            <span class="text">sign in</span>
         </a>
+        <a href="{{createLink('/create')}}" class="create">host <span>your place</span></a>
     </div>
-
 </div>

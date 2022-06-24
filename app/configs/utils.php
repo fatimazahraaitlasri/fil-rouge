@@ -44,6 +44,7 @@ function view(string $path, array $data = []): bool
         <?php \$__env->stopPush(); ?>";
     });
 
+
     echo $blade->render($path, $data);
 
     return true;
@@ -138,6 +139,14 @@ function logout()
     session_destroy();
 }
 
+/**
+ * afficher le chemin actuel
+ * @return mixed
+ */
+function currentRoute()
+{
+    return str_replace("/".PROJECT_NAME, "", $_SERVER["REQUEST_URI"]);
+}
 
 // /**
 //  * obtenir le rôle de l'utilisateur actuel

@@ -8,10 +8,16 @@
           type="text/css"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{$title ?? "Berrik"}}</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    @stack('styles')
 </head>
 <body>
-@component("layouts.navigation")
-@endcomponent
+@if(currentRoute() != "/")
+    @component("layouts.navigation")
+    @endcomponent
+@endif
 {{$slot}}
+@stack('scripts')
 </body>
 </html>
