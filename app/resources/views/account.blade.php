@@ -12,12 +12,16 @@
             </div>
             <div class="input">
                 <label for="avatar">Avatar</label>
-                <input value="{{$user->avatar ?? ""}}" type="text" name="avatar" id="avatar" required>
+                <input value="{{$user->avatar ?? ""}}" type="text" name="avatar" id="avatar">
+            </div>
+            <div class="input">
+                <label for="phone">Your Phone Number</label>
+                <input value="{{$user->phone ?? ""}}" type="tel" name="phone" id="phone" required>
             </div>
             <div class="input">
                 <label for="about">About</label>
                 <textarea name="about" id="about" cols="30" rows="10"
-                          required>{{$user->about ?? ""}}</textarea>
+                >{{$user->about ?? ""}}</textarea>
             </div>
             <button type="submit">{{$button}}</button>
         </form>

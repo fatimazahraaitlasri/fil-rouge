@@ -43,6 +43,9 @@
 
       input, select, textarea {
         padding: .8rem;
+        appearance: auto;
+        background: none;
+        border: 1px solid $border-color;
       }
     }
 

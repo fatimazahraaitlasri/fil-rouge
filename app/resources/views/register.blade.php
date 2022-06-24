@@ -20,8 +20,12 @@
                 <input type="password" name="password" id="password" required>
             </div>
             <div class="input">
+                <label for="phone">Your Phone Number</label>
+                <input type="tel" name="phone" id="phone" required>
+            </div>
+            <div class="input">
                 <label for="type">Account Type</label>
-                <select name="type" id="type">
+                <select name="role" id="type">
                     <option value="guest">guest</option>
                     <option value="host">host</option>
                 </select>

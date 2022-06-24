@@ -4,7 +4,25 @@ class Middleware
 {
     static public function auth()
     {
-        if (!isLoggedIn()) {
+        if (!Auth::check()) {
+            return redirect("/login");
+        }
+
+        return true;
+    }
+
+    public static function admin()
+    {
+        if (!Auth::check(ROLE_ADMIN)) {
+            return redirect("/login");
+        }
+
+        return true;
+    }
+
+    public static function host()
+    {
+        if (!Auth::check([ROLE_HOST, ROLE_ADMIN])) {
             return redirect("/login");
         }
 
@@ -29,9 +47,9 @@ class Middleware
             return true;
         }
 
-        $methodMiddlwareList = $instanceMiddlewareList[$methodName];
-        foreach ($methodMiddlwareList as $middlwareName) {
-            $canContinue = call_user_func(self::class."::$middlwareName");
+        $methodMiddlewareList = $instanceMiddlewareList[$methodName];
+        foreach ($methodMiddlewareList as $middlewareName) {
+            $canContinue = call_user_func(self::class."::$middlewareName");
             if (!$canContinue) {
                 exit(0);
             }

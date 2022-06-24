@@ -3,28 +3,30 @@
 class HomeController
 {
 
+    private User $userModel;
+    private Property $propertyModel;
+
     public function __construct()
     {
         $this->userModel = new User;
-
+        $this->propertyModel = new Property;
+        Middleware::assign($this, ["account", "profile"], ["auth"]);
 
     }
 
     public function index()
     {
-        $apartment = (object)[
-            "id" => 1,
-            "name" => "Apartment 1",
-            "price" => 100,
-            "description" => "This is the first apartment",
-            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-            "city" => "Paris",
-            "country" => "France",
-        ];
+
+        $apartments = $this->propertyModel->fetchAll("where type = :type limit 6", [
+            "type" => "apartment",
+        ]);
+        $hotels = $this->propertyModel->fetchAll("where type = :type limit 6", [
+            "type" => "hotel",
+        ]);
 
         return view("home", [
-            "apartments" => array_fill(0, 6, $apartment),
-            "hotels" => array_fill(0, 6, $apartment),
+            "apartments" => $apartments,
+            "hotels" => $hotels,
         ]);
     }
 
@@ -49,52 +51,74 @@ class HomeController
 
     public function register()
     {
+//         handle post request that has name|email|password|role
+        if (isPostRequest()) {
+            $data = getBody();
+            if (verify(["name", "email", "password", "role"], $data)) {
+                if (strtolower($data["role"]) == ROLE_ADMIN) {
+//                     prevent user from creating an admin account
+                    $data["role"] = ROLE_GUEST;
+                }
+                $userData = [
+                    ...$data,
+                    "password" => password_hash($data["password"], PASSWORD_ARGON2I),
+                ];
+                $userId = $this->userModel->create($userData);
+
+                if ($userId) {
+                    $user = $this->userModel->fetchById($userId);
+                    Auth::login($user);
+
+                    return redirect("/");
+                }
+            }
+
+            return view("register", [
+                "error" => "Something went wrong",
+            ]);
+        }
+
         return view("register");
     }
 
     public function profile()
     {
-        $property = (object)[
-            "id" => 1,
-            "name" => "Apartment 1",
-            "price" => 100,
-            "description" => "This is the first apartment",
-            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-            "city" => "Paris",
-            "country" => "France",
-            "owner_id" => 1,
-        ];
 
-        $user = (object)[
-            "id" => 1,
-            "name" => "John Doe",
-            "email" => "hello@gmail.com",
-            "role" => ROLE_HOST,
-            "created_at" => "2020-01-01",
-            "avatar" => "https://a0.muscache.com/im/pictures/user/77ed5bd3-8255-4829-9842-a476228e675f.jpg?aki_policy=profile_large",
-            "about" => "I am a host",
-        ];
-
+        $user = Auth::user();
+        $properties = $this->propertyModel->fetchManyByField("owner_id", $user->id);
 
         return view("profile", [
-            "properties" => array_fill(0, 6, $property),
+            "properties" => $properties,
             "user" => $user,
         ]);
     }
 
     public function account()
     {
-        $user = (object)[
-            "id" => 1,
-            "name" => "John Doe",
-            "email" => "hello@gmail.com",
-            "role" => ROLE_HOST,
-            "created_at" => "2020-01-01",
-            "avatar" => "https://a0.muscache.com/im/pictures/user/77ed5bd3-8255-4829-9842-a476228e675f.jpg?aki_policy=profile_large",
-            "about" => "I am a host",
-        ];
+        $user = Auth::user();
+        if (isPostRequest()) {
+            $data = getBody();
+            $userData = [
+                "name" => $data["name"],
+                "avatar" => $data["avatar"],
+                "about" => $data["about"],
+            ];
+            $this->userModel->updateById($user->id, $userData);
+            $user = $this->userModel->fetchById($user->id);
+            Auth::login($user);
+
+            return redirect("/profile");
+        }
+
 
         return view("account", ["user" => $user, "title" => "My account", "button" => "Update Account"]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect("/");
     }
 
 }

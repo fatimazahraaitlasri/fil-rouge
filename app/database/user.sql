@@ -7,5 +7,10 @@ create table if not exists users
     created_at datetime                      default now(),
     about      text,
     role       enum ('guest','host','admin') default 'guest',
+    phone      varchar(255),
     avatar     varchar(255)
 )
+
+
+
+

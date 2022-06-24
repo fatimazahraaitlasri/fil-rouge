@@ -10,197 +10,128 @@ class PropertiesController
     {
         $this->propertyModel = new Property;
         $this->userModel = new User;
+        $this->commentModel = new Comment;
+
+        Middleware::assign($this, ["create", "update", "delete"], ["host"]);
 
     }
 
     public function index()
     {
-        $apartment = (object)[
-            "id" => 1,
-            "name" => "Apartment 1",
-            "price" => 100,
-            "description" => "This is the first apartment",
-            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-            "city" => "Paris",
-            "country" => "France",
-        ];
 
         $title = "Properties";
         if ($_GET["type"] ?? null) {
             $title = $_GET["type"] == "apartment" ? "Apartments" : "Hotels";
         }
+        $filter = [];
+        foreach ($_GET as $key => $value) {
+            if (!$value) {
+                unset($_GET[$key]);
+                continue;
+            }
+            if ($key == "address") {
+                $filter[] = "(city like :$key or country like :$key or address like :$key)";
+                $_GET[$key] = "%$value%";
+                continue;
+            }
+            $filter[] = "$key = :$key";
+        }
+        $query = implode(" and ", $filter);
+        if ($query) {
+            $query = "where $query";
+        }
+        $properties = $this->propertyModel->fetchAll($query, $_GET);
 
         return view("properties", [
-            "properties" => array_fill(0, 10, $apartment),
+            "properties" => $properties,
             "title" => $title,
         ]);
     }
 
-///properties/getProperty/(id) GET request
     public function getProperty($id): bool
     {
 
 
-//        real code ==================
-//        $property = $this->propertyModel->fetchById($id);
-//        if (!$property) {
-//            return view("404", ["message" => "Property not found"]);
-//        }
-//        $comments = $this->commentModel->findCommentsByPropertyId($id);
-//        $authorMapById = [$property->owner_id => null];
-//
-//        if ($comments) {
-//            // fetch authors for each comment
-//            foreach ($comments as $comment) {
-//                $authorMapById[$comment->user_id] = null;
-//            }
-//        }
-//        $authors = $this->userModel->fetchManyByFieldIn("id", array_keys($authorMapById));
-//        foreach ($authors as $author) {
-//            $authorMapById[$author->id] = $author;
-//        }
-//        foreach ($comments as $comment) {
-//            $comment->author = $authorMapById[$comment->user_id];
-//        }
-//        return view("property", [
-//            "property" => $property,
-//            "comments" => $comments,
-//            "owner" => $authorMapById[$property->owner_id],
-//        ]);
-//        real code ==================
+        $property = $this->propertyModel->fetchById($id);
+        if (!$property) {
+            return view("404", ["message" => "Property not found"]);
+        }
+        $comments = $this->commentModel->findCommentsByPropertyId($id);
+        $authorMapById = [$property->owner_id => null];
 
-// test code ==================
-        $user = (object)[
-            "id" => 1,
-            "name" => "John Doe",
-            "email" => "hello@gmail.com",
-            "role" => ROLE_HOST,
-            "created_at" => "2020-01-01",
-            "avatar" => "https://a0.muscache.com/im/pictures/user/77ed5bd3-8255-4829-9842-a476228e675f.jpg?aki_policy=profile_large",
-            "about" => "I am a host",
-        ];
-
-        $comment = (object)[
-            "id" => 1,
-            "author" => $user,
-            "content" => "This is a comment",
-        ];
-
-        $details = (object)[
-            "country" => "spain",
-            "city" => "Barcelona",
-            "address" => "JL. Camplung Tanduk N 10",
-            "price" => 465,
-            "type" => "hotel",
-            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-            "description" => "something about this hotel",
-            "name" => "hotel indigo Bali Seminyak Beach",
-        ];
+        if ($comments) {
+            // fetch authors for each comment
+            foreach ($comments as $comment) {
+                $authorMapById[$comment->user_id] = null;
+            }
+        }
+        $authors = $this->userModel->fetchManyByFieldIn("id", array_keys($authorMapById));
+        foreach ($authors as $author) {
+            $authorMapById[$author->id] = $author;
+        }
+        foreach ($comments as $comment) {
+            $comment->author = $authorMapById[$comment->user_id];
+        }
 
         return view("property", [
-            "property" => $details,
-            "comments" => array_fill(0, 5, $comment),
-            "owner" => $user,
+            "property" => $property,
+            "comments" => $comments,
+            "owner" => $authorMapById[$property->owner_id],
         ]);
-//        test code ==================
-
 
     }
 
-///properties/createProperty /POST request katakhoud data dial property
     public function create()
     {
-//        if(!Auth::check(ROLE_HOST)){
-//            return redirect("/login");
-//        }
+        if (isPostRequest()) {
+            $data = getBody();
+            $requiredFields = ["name", "type", "address", "city", "country", "price", "description", "image", "guests"];
+            if (verify($requiredFields, $data)) {
+                $data["owner_id"] = Auth::user()->id;
+                $propertyId = $this->propertyModel->create($data);
+
+                return redirect("/properties/getProperty/$propertyId");
+            }
+        }
+
         return view("propertyForm", ["title" => "Create Property", "action" => "#", "button" => "Create"]);
-//        if (isLoggedIn() && currentUserRole() == OWNER) {
-//            $data = $_POST;
-//            $isPropertyCreated = $this->propertyModel->create($data);
-//            if ($isPropertyCreated) {
-////            return redirect("profile owner");
-//            }
-//
-//            return view("propertyForm");
-//
-////
-//        }
     }
 
-///properties/updateProperty/(id) Post request
 
     public function update($id)
     {
-        //        if(!Auth::check(ROLE_HOST)){
-//            return redirect("/login");
-//        }
+        $property = $this->propertyModel->fetchById($id);
+        if (!$property) {
+            return view("404", ["message" => "Property not found"]);
+        }
+        if (isPostRequest()) {
+            if (!Auth::check(ROLE_ADMIN) && Auth::user()->id != $property->owner_id) {
+                return view("403", ["message" => "You are not authorized to edit this property"]);
+            }
+            $data = getBody();
+            $this->propertyModel->updateById($id, $data);
 
-        $apartment = (object)[
-            "id" => 1,
-            "name" => "Apartment 1",
-            "price" => 100,
-            "description" => "This is the first apartment",
-            "address" => "JL. Camplung Tanduk N 10",
-            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
-            "city" => "Paris",
-            "country" => "France",
-        ];
+            return redirect("/properties/getProperty/$id");
+        }
 
 
         return view(
             "propertyForm",
-            ["title" => "Update Property", "action" => "#", "button" => "Update", "data" => $apartment]
+            ["title" => "Update Property", "action" => "#", "button" => "Update", "data" => $property]
         );
-//        if (!isLoggedIn()) {
-//            return redirect("/login");
-//        }
-//        $owner = $this->UserModel->fetchById($id);
-//        if (!$owner) {
-//            return view("404");
-//        }
-//        if ($owner["id"] != currentUserId() && $owner["role"] != currentUserRole()) {
-//            return redirect("/");
-//        }
-//        if (!isPostRequest()) {
-//            return view("update", ["data" => $owner]);
-//        }
-//        $updateProperty = $this->propertyModel->update($_POST, "id", $owner,);
-//        echo("valider");
     }
 
-///properties/deleteProperty/(id) get request
     public function delete($id)
     {
-
         $property = $this->propertyModel->fetchById($id);
-        $owner = $this->userModel->fetchById($id);
-
         if (!$property) {
-            return View("404", ["id" => $id]);
+            return view("404", ["message" => "Property not found"]);
         }
-        if ($owner["id"] !== currentUserId() && $owner["role"] !== currentUserRole()) {
-            ;
+        if (Auth::user()->id != $property->owner_id && !Auth::check(ROLE_ADMIN)) {
+            return view("403", ["message" => "You are not authorized to delete this property"]);
         }
+        $this->propertyModel->deleteById($id);
 
-        return redirect("/");
-        $isDeleted = $this->propertyModel->deleteById($id);
-        if (!$isDeleted) {
-            return bladeView("/history", ["error" => "$id not deleted"]);
-        }
-
-        return redirect("/history");
-    }
-
-///properties/all/(type) => t9dar tjiha type t9dar matjich lmohim 3titek type fi lien 3tini ghir proprties li 3andhom dak type si non jib properties kamlin
-    public function all($propertyType): bool
-    {
-        if ($propertyType !== "apartment" && $propertyType !== "hotel" && $propertyType !== "") {
-            $property = $this->propertyModel->fetchAllProperties();
-
-            return json(array_keys($this->$property));
-        }
-        $property = $this->propertyModel->fetchAll("where typeProperty =:type", ["type" => $propertyType]);
-
-        return json(array_keys($this->$property));
+        return redirect("/properties");
     }
 }

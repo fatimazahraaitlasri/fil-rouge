@@ -19,6 +19,12 @@
       gap: 1rem;
 
       .avatar {
+        background-color: $border-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
         @include size(8rem);
         border-radius: 50%;
 
@@ -30,12 +36,24 @@
       }
 
       .welcome {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
 
         .joined {
           opacity: .5;
           font-size: 1.2rem;
         }
+      }
+
+      .edit {
+        background-color: $primary-color;
+        color: white;
+        border-radius: .5rem;
+        font-size: 1.4rem;
+        text-transform: capitalize;
+        padding: 1rem;
       }
     }
 

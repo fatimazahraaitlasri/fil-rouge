@@ -22,28 +22,37 @@
                 <label for="country">Country</label>
                 <input value="{{$data->country ?? ""}}" type="text" name="country" id="country" required>
             </div>
+            {{--                 select that has two options hotel | apartment and hotel is selected by default--}}
             <div class="input">
-                <label for="price">Price</label>
-                <input value="{{$data->price ?? ""}}" type="number" name="price" id="price"
-                       placeholder="Price per night"
-                       required>
+                <label for="type">Property Type</label>
+                <select name="type" id="type">
+                    @foreach(["apartment", "hotel"] as $type)
+                        <option value="{{$type}}" {{ ($data->type ?? "") == $type ? "selected" : ""}}>{{ucfirst($type)}}</option>
+                    @endforeach
+                </select>
+                <div class="input">
+                    <label for="price">Price</label>
+                    <input value="{{$data->price ?? ""}}" type="number" name="price" id="price"
+                           placeholder="Price per night"
+                           required>
+                </div>
+                <div class="input">
+                    <label for="guests">Guests</label>
+                    <input value="{{$data->guests ?? ""}}" min="1" type="number" name="guests" id="guests"
+                           placeholder="Number of guests"
+                           required>
+                </div>
+                <div class="input">
+                    <label for="image">Preview Image</label>
+                    <input value="{{$data->image ?? ""}}" type="text" name="image" id="image" required>
+                </div>
+                <div class="input">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" cols="30" rows="10"
+                              required>{{$data->description ?? ""}}</textarea>
+                </div>
+                <button type="submit">{{$button}}</button>
             </div>
-            <div class="input">
-                <label for="guests">Guests</label>
-                <input value="{{$data->guests ?? ""}}" min="1" type="number" name="guests" id="guests"
-                       placeholder="Number of guests"
-                       required>
-            </div>
-            <div class="input">
-                <label for="image">Preview Image</label>
-                <input value="{{$data->image ?? ""}}" type="text" name="image" id="image" required>
-            </div>
-            <div class="input">
-                <label for="description">Description</label>
-                <textarea name="description" id="description" cols="30" rows="10"
-                          required>{{$data->description ?? ""}}</textarea>
-            </div>
-            <button type="submit">{{$button}}</button>
         </form>
     </div>
 @endcomponent

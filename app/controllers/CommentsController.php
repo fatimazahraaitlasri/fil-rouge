@@ -8,12 +8,13 @@ class CommentsController
     public function __construct()
     {
         $this->commentModel = new Comment;
+        Middleware::assign($this, ["create"], ["auth"]);
     }
 
     public function create($propertyId): bool
     {
         if (!isPostRequest()) {
-            return redirect("/");
+            return redirect("/properties/getProperty/$propertyId");
         }
         $user = Auth::user();
         $body = getBody();

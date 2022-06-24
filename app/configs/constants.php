@@ -13,6 +13,6 @@ define("PROJECT_NAME", $projectName);
 
 
 //roles
-define("ROLE_ADMIN", "admin");
-define("ROLE_GUEST", "guest");
-define("ROLE_HOST", "host");
+const ROLE_ADMIN = "admin";
+const ROLE_GUEST = "guest";
+const ROLE_HOST = "host";
