@@ -21,7 +21,7 @@ class Auth
         return self::$user->role == $role;
     }
 
-    public function login($user)
+    static public function login($user)
     {
         createUserSession($user);
     }

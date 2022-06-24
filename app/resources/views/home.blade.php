@@ -27,7 +27,7 @@
         </div>
 
         <div class="entities">
-            <h2>Apartments in Marrakech</h2>
+            <h2>Latest Apartments</h2>
             <p class="text">Donec vitae dignissim magna, viverra semper justo. Cras blandit enim blandit porta
                 elementum.</p>
             <div class="list">
@@ -38,12 +38,12 @@
             </div>
         </div>
         <div class="entities">
-            <h2>Apartments in Marrakech</h2>
+            <h2>Latest Hotels</h2>
             <p class="text">Donec vitae dignissim magna, viverra semper justo. Cras blandit enim blandit porta
                 elementum.</p>
             <div class="list">
-                @foreach($apartments as $apartment)
-                    @component("components.cardItem", ["data" => $apartment])
+                @foreach($hotels as $hotel)
+                    @component("components.cardItem", ["data" => $hotel])
                     @endcomponent
                 @endforeach
             </div>

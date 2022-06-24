@@ -3,12 +3,13 @@
 class PropertiesController
 {
     public Property $propertyModel;
-    private user $UserModel;
+    private User $userModel;
+    private Comment $commentModel;
 
     public function __construct()
     {
         $this->propertyModel = new Property;
-        $this->UserModel = new user;
+        $this->userModel = new User;
 
     }
 
@@ -38,14 +39,36 @@ class PropertiesController
 ///properties/getProperty/(id) GET request
     public function getProperty($id): bool
     {
-//        if (isGetRequest()) {
-//            $property = $this->propertyModel->fetchById($id);
-//            if (!$property) {
-//                return view("404");
-//            }
-//
-//            return json(array_keys($this->$property));
-//        }
+
+
+//        real code ==================
+        $property = $this->propertyModel->fetchById($id);
+        if (!$property) {
+            return view("404", ["message" => "Property not found"]);
+        }
+        $comments = $this->commentModel->findCommentsByPropertyId($id);
+        if ($comments) {
+            // fetch authors for each comment
+            $authorMapById = [];
+            foreach ($comments as $comment) {
+                $authorMapById[$comment->user_id] = null;
+            }
+            $authors = $this->userModel->fetchManyByFieldIn("id", array_keys($authorMapById));
+            foreach ($authors as $author) {
+                $authorMapById[$author->id] = $author;
+            }
+            foreach ($comments as $comment) {
+                $comment->author = $authorMapById[$comment->user_id];
+            }
+        }
+//        real code ==================
+
+// test code ==================
+        $comment = (object)[
+
+
+        ];
+
         $details = (object)[
             "country" => "spain",
             "city" => "Barcelona",
@@ -56,6 +79,8 @@ class PropertiesController
             "description" => "something about this hotel",
             "name" => "hotel indigo Bali Seminyak Beach",
         ];
+
+//        test code ==================
 
         return view("property", [
             "property" => $details,
@@ -129,7 +154,7 @@ class PropertiesController
     {
 
         $property = $this->propertyModel->fetchById($id);
-        $owner = $this->UserModel->fetchById($id);
+        $owner = $this->userModel->fetchById($id);
 
         if (!$property) {
             return View("404", ["id" => $id]);

@@ -102,4 +102,21 @@ class Model
     {
         return $this->fetchOne("where id =:id", ["id" => $id]);
     }
+
+    public function fetchByField($field, $value)
+    {
+        return $this->fetchOne("where $field =:$field", [$field => $value]);
+    }
+
+    public function fetchManyByField($field, $value)
+    {
+        return $this->fetchAll("where $field =:$field", [$field => $value]);
+    }
+
+    public function fetchManyByFieldIn($field, $values)
+    {
+        $placeholders = implode(",", array_fill(0, count($values), "?"));
+
+        return $this->fetchAll("where $field in ($placeholders)", $values);
+    }
 }

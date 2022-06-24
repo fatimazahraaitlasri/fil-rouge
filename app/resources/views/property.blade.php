@@ -18,6 +18,7 @@
 
         <div class="comments">
             <p class="title">comments</p>
+
             <div class="list">
                 @foreach($comments as $comment)
                     @component("components.comment", ["data" => $comment])

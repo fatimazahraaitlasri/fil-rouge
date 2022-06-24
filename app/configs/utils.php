@@ -189,10 +189,12 @@ function createUserSession($user): void
  *
  * @return [type]
  */
-function redirect(string $path): void
+function redirect(string $path): bool
 {
     $path = trim($path, "/");
     header("location: /".PROJECT_NAME."/$path");
+
+    return true;
 }
 
 
@@ -251,7 +253,7 @@ function isGetRequest(): bool
  */
 function getBody(): array
 {
-    if (count($_POST)) {
+    if (count($_POST) > 0) {
         return $_POST;
     }
     $jsonData = file_get_contents('php://input');

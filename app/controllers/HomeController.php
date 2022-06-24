@@ -24,11 +24,26 @@ class HomeController
 
         return view("home", [
             "apartments" => array_fill(0, 6, $apartment),
+            "hotels" => array_fill(0, 6, $apartment),
         ]);
     }
 
     public function login()
     {
+        if (isPostRequest()) {
+            $data = getBody();
+            $user = $this->userModel->fetchByField("email", $data["email"]);
+            if ($user && password_verify($data["password"], $user->password)) {
+                Auth::login($user);
+
+                return redirect("/");
+            }
+
+            return view("login", [
+                "error" => "Wrong password or email",
+            ]);
+        }
+
         return view("login");
     }
 
