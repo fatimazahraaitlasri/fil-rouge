@@ -3,7 +3,7 @@ define("MIDDLEWARE", "middleware");
 
 define("DB_NAME", "filerouge");
 define("DB_USERNAME", "root");
-define("DB_PASSWORD", "root");
+define("DB_PASSWORD", "");
 // todo: remove password from db
 
 

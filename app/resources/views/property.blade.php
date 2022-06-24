@@ -36,16 +36,17 @@
             <p class="text">{{ $property->description }}</p>
         </div>
 
-        @if(count($comments))
-            <div class="comments">
-                @if(Auth::check())
-                    <form action="{{createLink('/comments/create/'.$property->id)}}" method="post">
-                        <label for="comment">Your Comment</label>
-                        <textarea placeholder="What's on your mind?" name="comment" id="comment" cols="30"
-                                  rows="5"></textarea>
-                        <button type="submit">submit</button>
-                    </form>
-                @endif
+
+        <div class="comments">
+            @if(Auth::check())
+                <form action="{{createLink('/comments/create/'.$property->id)}}" method="post">
+                    <label for="comment">Your Comment</label>
+                    <textarea placeholder="What's on your mind?" name="comment" id="comment" cols="30"
+                              rows="5"></textarea>
+                    <button type="submit">submit</button>
+                </form>
+            @endif
+            @if(count($comments))
                 <p class="title">comments ({{count($comments)}})</p>
 
                 <div class="list">
@@ -61,7 +62,8 @@
                         </div>
                     @endforeach
                 </div>
-            </div>
-        @endif
+            @endif
+
+        </div>
     </div>
 @endcomponent

@@ -98,12 +98,7 @@ class HomeController
         $user = Auth::user();
         if (isPostRequest()) {
             $data = getBody();
-            $userData = [
-                "name" => $data["name"],
-                "avatar" => $data["avatar"],
-                "about" => $data["about"],
-            ];
-            $this->userModel->updateById($user->id, $userData);
+            $this->userModel->updateById($user->id, $data);
             $user = $this->userModel->fetchById($user->id);
             Auth::login($user);
 
