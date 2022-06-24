@@ -15,5 +15,14 @@
             <p class="title">description</p>
             <p class="text">{{ $property->description }}</p>
         </div>
-    </div>
+
+        <div class="comments">
+            <p class="title">comments</p>
+            <div class="list">
+                @foreach($comments as $comment)
+                    @component("components.comment", ["data" => $comment])
+                    @endcomponent
+                @endforeach
+            </div>
+        </div>
 @endcomponent

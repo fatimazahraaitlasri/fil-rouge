@@ -30,9 +30,18 @@ function view(string $path, array $data = []): bool
     $blade->directive("styles", function ($file) {
         $file = trim($file, "/");
 
-        return "<?php \$__env->startPush('styles'); ?>
-        <link rel='stylesheet' href='css/<?=$file;?>.css'>
-        <?php \$__env->stopPush(); ?>
+// add unique stylesheets to the page
+        return "<?php
+        \$__env->stylesMap ??= [];
+        if(!isset(\$__env->stylesMap[$file])):
+           \$__env->stylesMap[$file] = true;
+            \$__env->startPush('styles');
+        ?>
+            <link rel='stylesheet' href='css/<?=$file;?>.css'>
+        <?php
+            \$__env->stopPush(); 
+        endif; 
+        ?>
     ";
     });
 

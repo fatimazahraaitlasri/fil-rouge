@@ -1,5 +1,6 @@
 @component("layouts.layout")
     @styles("home")
+
     <div class="home">
         <div class="intro">
             @component("layouts.navigation", ["light" => true])
