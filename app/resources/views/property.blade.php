@@ -6,7 +6,7 @@
                 <h2 class="name">{{ $property->name }}</h2>
                 <p class="address">{{ $property->address }}, {{ $property->city }} - {{ $property->country }}</p>
             </div>
-            <p class="price">${{ $property->price }}->night</p>
+            <p class="price">${{ $property->price }}/night</p>
         </div>
         <div class="img">
             <img src="{{$property->image}}" alt="{{$property->name}}">

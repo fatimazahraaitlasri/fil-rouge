@@ -1,0 +1,72 @@
+@import "abstracts";
+
+
+.authForm {
+  margin: 1rem;
+  padding: 1rem;
+  @include desktop {
+    margin: 2rem auto;
+    width: 45%;
+  }
+
+  h1 {
+    font-size: 3rem;
+    text-align: center;
+    @include desktop {
+      font-size: 4rem;
+    }
+  }
+
+  .form {
+    margin-top: 2rem;
+    border: 1px solid rgba(black, .2);
+    padding: 1.5rem 2rem;
+    border-radius: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    @include desktop {
+      padding: 2rem;
+    }
+
+    .error {
+      font-size: 1.4rem;
+      color: $primary-color;
+    }
+
+    .input {
+      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: 1.4rem;
+        font-weight: 600;
+      }
+
+      input, select {
+        padding: .8rem;
+      }
+    }
+
+    button {
+      padding: 1rem;
+      border: none;
+      background-color: $primary-color;
+      color: white;
+      border-radius: .5rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .other {
+      font-size: 1.4rem;
+      text-align: center;
+
+      .link {
+        color: $primary-color;
+      }
+    }
+  }
+}
