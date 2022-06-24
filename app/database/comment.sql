@@ -5,6 +5,6 @@ create table if not exists comments
     property_id int  not null,
     content     text not null,
     created_at  datetime default now(),
-    foreign key (user_id) references users (id),
-    foreign key (property_id) references properties (id)
+    foreign key (user_id) references users (id) on delete cascade on update cascade,
+    foreign key (property_id) references properties (id) on delete cascade on update cascade
 );

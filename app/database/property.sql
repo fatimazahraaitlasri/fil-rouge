@@ -8,7 +8,9 @@ create table if not exists properties
     city        varchar(255),
     address     varchar(255),
     country     varchar(255),
+    guests      int                   default 1,
     owner_id    int,
     created_at  timestamp             default now(),
     foreign key (owner_id) references users (id) on delete cascade on update cascade
 );
+

@@ -29,6 +29,12 @@
                        required>
             </div>
             <div class="input">
+                <label for="guests">Guests</label>
+                <input value="{{$data->guests ?? ""}}" min="1" type="number" name="guests" id="guests"
+                       placeholder="Number of guests"
+                       required>
+            </div>
+            <div class="input">
                 <label for="image">Preview Image</label>
                 <input value="{{$data->image ?? ""}}" type="text" name="image" id="image" required>
             </div>
