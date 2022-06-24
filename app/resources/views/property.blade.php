@@ -52,12 +52,16 @@
                 <div class="list">
                     @foreach($comments as $comment)
                         <div class="comment">
-                            <div class="user">
+                            <a href="{{createLink("/users/profile/".$comment->author->id)}}" class="user">
                                 <div class="avatar">
-                                    <img src="{{$comment->author->avatar}}" alt="{{$comment->author->name}}">
+                                    @if($comment->author->avatar)
+                                        <img src="{{$comment->author->avatar}}" alt="{{$comment->author->name}}">
+                                    @else
+                                        <i class="fas fa-user"></i>
+                                    @endif
                                 </div>
                                 <p class="name">{{$comment->author->name }}</p>
-                            </div>
+                            </a>
                             <p class="text">{{$comment->content}}</p>
                         </div>
                     @endforeach

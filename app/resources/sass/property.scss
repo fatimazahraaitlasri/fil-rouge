@@ -219,6 +219,10 @@
             background-color: $border-color;
             @include size(4rem);
             border-radius: 50%;
+            align-items: center;
+            color: white;
+            justify-content: center;
+            display: flex;
 
             img {
               border-radius: inherit;
