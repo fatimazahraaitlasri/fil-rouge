@@ -1,6 +1,6 @@
 @styles("card")
 @php
-    $link = createLink("/apartments/$data->id");
+    $link = createLink("/properties/getProperty/$data->id");
 @endphp
 <div class="card">
     <a href="{{$link}}" class="img"><img src="{{$data->image}}" alt="{{$data->name}}"></a>

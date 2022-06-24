@@ -1,9 +1,12 @@
 {
     "/js/app.js": "/js/app.js",
     "/js/index.js": "/js/index.js",
-    "/css/navigation.css": "/css/navigation.css",
+    "/css/navigation-old.css": "/css/navigation-old.css",
     "/css/layout.css": "/css/layout.css",
     "/css/home.css": "/css/home.css",
     "/css/card.css": "/css/card.css",
-    "/css/styles.css": "/css/styles.css"
+    "/css/styles.css": "/css/styles.css",
+    "/css/property.css": "/css/property.css",
+    "/css/properties.css": "/css/properties.css",
+    "/css/navigation.css": "/css/navigation.css"
 }
