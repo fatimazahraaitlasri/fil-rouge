@@ -39,7 +39,7 @@ function serve($param)
         return serve($newParams);
     }
 
-    return view("app", ["data" => ["user" => "test"]]);
+    return view("404", ["message" => "Page not found"]);
 }
 
 serve($params);

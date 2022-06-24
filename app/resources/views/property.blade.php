@@ -1,10 +1,12 @@
 @component("layouts.layout")
     @styles("property")
     <div class="property">
-        <div class="controls">
-            <a href="{{createLink("/properties/delete/$property->id")}}">Delete</a>
-            <a href="{{createLink("/properties/update/$property->id")}}">Edit</a>
-        </div>
+        @if(Auth::check() && (Auth::user()->id == $owner->id || Auth::check(ROLE_ADMIN)) )
+            <div class="controls">
+                <a href="{{createLink("/properties/delete/$property->id")}}">Delete</a>
+                <a href="{{createLink("/properties/update/$property->id")}}">Edit</a>
+            </div>
+        @endif
         <div class="intro">
             <div class="main">
                 <h2 class="name">{{ $property->name }}</h2>

@@ -2,18 +2,6 @@
 
 use Jenssegers\Blade\Blade;
 
-/**
- * retour fichier view  (method ancienne)
- * @param  string  $path  chemin du fichier view après /resources/views
- * @param  array  $data  tableau à décompresser dans view(html)
- */
-function oldView($path, $data = [])
-{
-
-    extract($data);
-    $path = ltrim($path, "/");
-    include dirname(__DIR__)."/resources/views/$path.php";
-}
 
 /**
  * retour fichier view  (method nouveau)
@@ -68,12 +56,6 @@ function json($data = []): bool
 }
 
 
-function component($path, $data = [])
-{
-    view("/components/$path", $data);
-}
-
-
 /**
  * afficher clairement les données et arrêter l'exécution
  * @param  mixed  ...$data
@@ -116,23 +98,10 @@ function verify($requiredFields, $data): bool
 
 
 /**
- * convertir les slashs (/) en backslashes (\)
- * @param  string  $path
- *
- * @return [type]
- */
-function normalizePath($path)
-{
-
-    return str_replace("/", "\\", $path);
-}
-
-
-/**
  * vérifier si l'utilisateur est connecté ou non
  * @return [type]
  */
-function isLoggedIn()
+function isLoggedIn(): bool
 {
     if (!isset($_SESSION)) {
         session_start();
@@ -155,19 +124,6 @@ function logout()
 function currentRoute()
 {
     return str_replace("/".PROJECT_NAME, "", $_SERVER["REQUEST_URI"]);
-}
-
-// /**
-//  * obtenir le rôle de l'utilisateur actuel
-//  * @return [type]
-//  */
-function currentUserRole()
-{
-    if (!isLoggedIn()) {
-        return null;
-    }
-
-    return $_SESSION["user"]["role"];
 }
 
 
@@ -199,25 +155,6 @@ function redirect(string $path): bool
 
 
 /**
- * générer une chaîne aléatoire avec une longueur choisie
- * @param  int  $length
- *
- * @return [type]
- */
-function generateRandomString($length = 10)
-{
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-
-    return $randomString;
-}
-
-
-/**
  * créez un lien après /{PROJECT_NAME}/
  * @param  mixed  $path
  *
@@ -230,16 +167,6 @@ function createLink(mixed $path): string
     return "/".PROJECT_NAME."/$path";
 }
 
-
-function asset($path)
-{
-    return $path;
-}
-
-function isowner(): bool
-{
-    return currentUserRole() === OWNER;
-}
 
 function isGetRequest(): bool
 {

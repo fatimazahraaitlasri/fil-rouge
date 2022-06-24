@@ -1,10 +1,20 @@
-<div @class(["nav", "light" => $light])>
-    <a href="{{createLink('/')}}" class=" logo">Bbrikk</a>
+<div @class(["nav", "light" => $light ?? false]) :class="{open: show}" x-data="{show:false}">
+    <span class="menu" @click="show = !show"><i class="fal fa-bars"></i></span>
+    <a href="{{createLink('/')}}" class="logo">Casar</a>
     <div class="links">
         @foreach(["all","hotel", "apartment" ] as $type)
             <a href="{{createLink("/properties?".($type == "all" ? "" : "type=$type"))}}"
                class="link">{{$type}}{{$type != "all" ? "s" : "" }}</a>
         @endforeach
+    </div>
+    <div class="mobileLinks" :class="{mobileShow:show}">
+        @foreach(["all","hotel", "apartment" ] as $type)
+            <a href="{{createLink("/properties?".($type == "all" ? "" : "type=$type"))}}"
+               class="link">{{$type}}{{$type != "all" ? "s" : "" }}</a>
+        @endforeach
+        @if(Auth::check())
+            <a href="{{createLink('/logout')}}" class="link">Logout</a>
+        @endif
     </div>
     <div class="auth">
         @if(Auth::user())

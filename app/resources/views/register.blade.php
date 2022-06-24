@@ -1,6 +1,5 @@
 @component("layouts.layout")
     @styles("auth")
-    {{--    registeration form with fields name|email|password|type of account--}}
     <div class="authForm">
         <h1>Sign up</h1>
         <form action="#" method="post" class="form">

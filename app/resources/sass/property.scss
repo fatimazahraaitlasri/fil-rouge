@@ -83,8 +83,14 @@
   .more {
     margin: 1rem 0;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column-reverse;
+    gap: 1rem;
+    @include desktop {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
 
     .avatar {
       display: flex;
@@ -107,7 +113,10 @@
     .info {
       list-style: none;
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
+      font-size: 1.4rem;
+      align-items: center;
+      white-space: nowrap;
 
       li {
         position: relative;
@@ -119,7 +128,7 @@
           border-radius: 50%;
           background-color: black;
           top: 50%;
-          left: -.6rem;
+          left: -.8rem;
         }
 
         &:first-of-type {
