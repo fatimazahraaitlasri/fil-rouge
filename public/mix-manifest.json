@@ -1,6 +1,6 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/js/index.js": "/js/index.js",
+    "/css/navigation-old.css": "/css/navigation-old.css",
+    "/css/layout.css": "/css/layout.css",
     "/css/home.css": "/css/home.css",
     "/css/card.css": "/css/card.css",
     "/css/auth.css": "/css/auth.css",
@@ -10,7 +10,5 @@
     "/css/property-form.css": "/css/property-form.css",
     "/css/properties.css": "/css/properties.css",
     "/css/profile.css": "/css/profile.css",
-    "/css/navigation.css": "/css/navigation.css",
-    "/css/navigation-old.css": "/css/navigation-old.css",
-    "/css/layout.css": "/css/layout.css"
+    "/css/navigation.css": "/css/navigation.css"
 }
