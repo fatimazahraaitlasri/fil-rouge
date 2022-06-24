@@ -12,11 +12,7 @@ class HomeController
 
     public function index()
     {
-        return view("app");
+        return view("home");
     }
 
-    public function tester()
-    {
-        return view("app");
-    }
 }

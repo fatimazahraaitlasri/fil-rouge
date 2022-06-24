@@ -1,6 +1,7 @@
 {
     "require": {
-        "jenssegers/blade": "^1.4"
+        "jenssegers/blade": "^1.4",
+      "ext-pdo": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.0"

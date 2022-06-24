@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@prettier/plugin-php": "^0.18.8",
     "auto-prefixer": "^0.4.2",
     "autoprefixer": "^10.4.7",
     "browser-sync": "^2.27.10",

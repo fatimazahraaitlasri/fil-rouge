@@ -2,5 +2,5 @@
 
 class Property extends Model
 {
-    protected $tableName = "property";
+    protected $tableName = "properties";
 }

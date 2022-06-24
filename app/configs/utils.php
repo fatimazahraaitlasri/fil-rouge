@@ -4,31 +4,32 @@ use Jenssegers\Blade\Blade;
 
 /**
  * retour fichier view  (method ancienne)
- * @param string $path chemin du fichier view après /resources/views
- * @param array $data tableau à décompresser dans view(html)
+ * @param  string  $path  chemin du fichier view après /resources/views
+ * @param  array  $data  tableau à décompresser dans view(html)
  */
 function oldView($path, $data = [])
 {
 
     extract($data);
     $path = ltrim($path, "/");
-    include dirname(__DIR__) . "/resources/views/$path.php";
+    include dirname(__DIR__)."/resources/views/$path.php";
 }
 
 /**
  * retour fichier view  (method nouveau)
- * @param string $path chemin du fichier view après /resources/views
- * @param array $data tableau à décompresser dans view(html)
+ * @param  string  $path  chemin du fichier view après /resources/views
+ * @param  array  $data  tableau à décompresser dans view(html)
  */
 function view(string $path, array $data = []): bool
 {
-    $views = dirname(__DIR__) . "/resources/views";
-    $cache = dirname(__DIR__) . "/cache/views";
+    $views = dirname(__DIR__)."/resources/views";
+    $cache = dirname(__DIR__)."/cache/views";
 
     $blade = new Blade($views, $cache);
 
     $blade->directive("styles", function ($file) {
         $file = trim($file, "/");
+
         return "<?php \$__env->startPush('styles'); ?>
         <link rel='stylesheet' href='css/<?=$file;?>.css'>
         <?php \$__env->stopPush(); ?>
@@ -37,12 +38,14 @@ function view(string $path, array $data = []): bool
 
     $blade->directive("scripts", function ($file) {
         $file = ltrim($file, "/");
+
         return "<?php \$__env->startPush('scripts'); ?>
         <script src='js/<?=$file;?>.js'></script>
         <?php \$__env->stopPush(); ?>";
     });
 
     echo $blade->render($path, $data);
+
     return true;
 }
 
@@ -50,6 +53,7 @@ function json($data = []): bool
 {
     header("Content-Type: application/json");
     echo json_encode($data);
+
     return true;
 }
 
@@ -62,7 +66,7 @@ function component($path, $data = [])
 
 /**
  * afficher clairement les données et arrêter l'exécution
- * @param mixed ...$data
+ * @param  mixed  ...$data
  *
  * @return [type]
  */
@@ -84,8 +88,8 @@ function isPostRequest()
 
 /**
  * vérifier si le tableau a des champs obligatoires
- * @param array $requiredFields champs obligatoires
- * @param array $data tableau associatif de données
+ * @param  array  $requiredFields  champs obligatoires
+ * @param  array  $data  tableau associatif de données
  *
  * @return bool
  */
@@ -96,13 +100,14 @@ function verify($requiredFields, $data): bool
             return false;
         }
     }
+
     return true;
 }
 
 
 /**
  * convertir les slashs (/) en backslashes (\)
- * @param string $path
+ * @param  string  $path
  *
  * @return [type]
  */
@@ -122,7 +127,8 @@ function isLoggedIn()
     if (!isset($_SESSION)) {
         session_start();
     }
-    return isset($_SESSION[MAIN_PATIENT_KEY]) && !empty($_SESSION[MAIN_PATIENT_KEY]);
+
+    return isset($_SESSION["user"]) && !empty($_SESSION["user"]);
 }
 
 
@@ -139,64 +145,42 @@ function logout()
 //  */
 function currentUserRole()
 {
-    if (!isLoggedIn())
+    if (!isLoggedIn()) {
         return null;
-    return $_SESSION["role"];
-}
+    }
 
-function currentUserId()
-{
-    if (!isLoggedIn())
-        return null;
-    return $_SESSION["role"];
+    return $_SESSION["user"]["role"];
 }
 
 
 /**
- * retourne "reference" de patient actuel à partir du tableau de $_SESSION
- */
-function currentPatientRef()
-{
-    isLoggedIn();
-    return $_SESSION[MAIN_PATIENT_KEY] ?? null; // nullish coalascing
-}
-
-/**
- * créer une session pour patient par son reference
+ * créer une session pour user
  */
 function createUserSession($user): void
 {
     if (!isset($_SESSION)) {
         session_start();
     }
-    $_SESSION["user"] = $user["id"];
-    $_SESSION["currentPatient"] = $user;
-}
-
-function currentPatient()
-{
-    if (!isLoggedIn())
-        return null;
-    return $_SESSION["currentPatient"];
+    $_SESSION["user"] = $user;
 }
 
 
 /**
  * redirect vers un chemin spécifié
- * @param string $path chemin aprés /{PROJECT_NAME}/
+ * @param  string  $path  chemin aprés /{PROJECT_NAME}/
  *
  * @return [type]
  */
 function redirect(string $path): void
 {
     $path = trim($path, "/");
-    header("location: /" . PROJECT_NAME . "/$path");
+    header("location: /".PROJECT_NAME."/$path");
 }
 
 
 /**
  * générer une chaîne aléatoire avec une longueur choisie
- * @param int $length
+ * @param  int  $length
  *
  * @return [type]
  */
@@ -208,20 +192,22 @@ function generateRandomString($length = 10)
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
+
     return $randomString;
 }
 
 
 /**
  * créez un lien après /{PROJECT_NAME}/
- * @param mixed $path
+ * @param  mixed  $path
  *
  * @return [type]
  */
 function createLink(mixed $path): string
 {
     $path = trim($path, "/");
-    return "/" . PROJECT_NAME . "/$path";
+
+    return "/".PROJECT_NAME."/$path";
 }
 
 
@@ -251,6 +237,7 @@ function getBody(): array
         return $_POST;
     }
     $jsonData = file_get_contents('php://input');
+
     return json_decode($jsonData);
 }
 

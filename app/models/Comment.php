@@ -2,7 +2,7 @@
 
 class Comment extends Model
 {
-    protected $tableName = "property";
+    protected $tableName = "comments";
 }
 
 

@@ -8,24 +8,24 @@ class LoginController
 
     public function __construct()
     {
-        $owner = $this->UserModel->fetchById($id);
+        $this->UserModel = new User;
     }
 
 
     public function index()
     {
 
-        if (isPostRequest() && verify(["name", "password"], $_POST)) {
-            $name = $_POST["name"];
-            $user = $this->UserModel->fetchByName($name);
-
-            if (!$user) {
-                return view("login");
-            }
-
-            createUserSession($user);
-            return redirect("/");
-        }
+//        if (isPostRequest() && verify(["name", "password"], $_POST)) {
+//            $name = $_POST["name"];
+//            $user = $this->UserModel->fetchByName($name);
+//
+//            if (!$user) {
+//                return view("login");
+//            }
+//
+//            createUserSession($user);
+//            return redirect("/");
+//        }
 
         return view("login");
 
