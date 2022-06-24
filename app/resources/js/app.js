@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Apartments from "./pages/Apartments";
 import PropertyDetails from "./pages/PropertyDetails";
+import PropertyForm from "./pages/PropertyForm";
 
 
 const app = createApp(App);
@@ -23,6 +24,7 @@ const routes = [
     {path: "/login", component: Login},
     {path: "/register", component: Register},
     {path: "/properties/:property", component: PropertyDetails},
+    {path: "/properties/create", component: PropertyForm},
 ]
 
 const router = createRouter({
@@ -34,6 +36,8 @@ const dataScript = document.querySelector("#app_data");
 if (dataScript) {
     app.config.globalProperties.$data = JSON.parse(dataScript.textContent);
 }
+
+app.config.globalProperties.$API_URL = "http://localhost/fil-rouge-youcode"
 
 
 app.use(router)

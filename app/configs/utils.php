@@ -144,6 +144,13 @@ function currentUserRole()
     return $_SESSION["role"];
 }
 
+function currentUserId()
+{
+    if (!isLoggedIn())
+        return null;
+    return $_SESSION["role"];
+}
+
 
 /**
  * retourne "reference" de patient actuel à partir du tableau de $_SESSION
@@ -151,19 +158,19 @@ function currentUserRole()
 function currentPatientRef()
 {
     isLoggedIn();
-    return $_SESSION[MAIN_PATIENT_KEY] ?? null; // nullish coalascing  
+    return $_SESSION[MAIN_PATIENT_KEY] ?? null; // nullish coalascing
 }
 
 /**
  * créer une session pour patient par son reference
  */
-function createPatientSession($patient)
+function createUserSession($user): void
 {
     if (!isset($_SESSION)) {
         session_start();
     }
-    $_SESSION[MAIN_PATIENT_KEY] = $patient[MAIN_PATIENT_KEY];
-    $_SESSION["currentPatient"] = $patient;
+    $_SESSION["user"] = $user["id"];
+    $_SESSION["currentPatient"] = $user;
 }
 
 function currentPatient()
@@ -180,7 +187,7 @@ function currentPatient()
  *
  * @return [type]
  */
-function redirect($path)
+function redirect(string $path): void
 {
     $path = trim($path, "/");
     header("location: /" . PROJECT_NAME . "/$path");
@@ -211,7 +218,7 @@ function generateRandomString($length = 10)
  *
  * @return [type]
  */
-function createLink($path)
+function createLink(mixed $path): string
 {
     $path = trim($path, "/");
     return "/" . PROJECT_NAME . "/$path";
@@ -226,6 +233,11 @@ function asset($path)
 function isowner(): bool
 {
     return currentUserRole() === OWNER;
+}
+
+function isGetRequest(): bool
+{
+    return $_SERVER["REQUEST_METHOD"] === "GET";
 }
 
 

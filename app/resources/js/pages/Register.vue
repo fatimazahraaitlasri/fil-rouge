@@ -24,8 +24,14 @@
 
         </div>
 
+
       </div>
-      <button type="submit"
+      <div class="">
+        <label for="floating_phone">Role</label>
+        <input type="text" name="role" id="floating_phone" v-model="tel">
+
+      </div>
+      <button type="submit" v-on:click="Add()"
               class="text-white bg-rose-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         Submit
       </button>
@@ -34,6 +40,9 @@
 </template>
 
 <script>
+
+import axios from "axios";
+
 export default {
   name: "Register",
   data() {
@@ -41,6 +50,13 @@ export default {
       name: "",
       email: "",
       tel: "",
+
+    }
+  },
+  methods: {
+    Add() {
+      axios.post('register/create');
+
 
     }
   }

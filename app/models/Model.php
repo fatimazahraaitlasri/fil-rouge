@@ -8,16 +8,20 @@ class Model
 
     public function __construct()
     {
-        $this->connection = new PDO("mysql:host=localhost;dbname=".DB_NAME, DB_USERNAME, DB_PASSWORD);
+        $this->connection = new PDO("mysql:host=localhost;dbname=" . DB_NAME, DB_USERNAME, DB_PASSWORD);
     }
 
-    public function fetchAll($filter = "", $data = [])
+    public function fetchAll($filter = "", $data = []): bool|array
     {
-
         return $this->fetchAllWithColumnRename($filter, "*", $data);
     }
 
-    public function fetchAllWithJoin($filter = "", $joinCode = "", $data = [])
+    public function fetchAllProperties(): bool|array
+    {
+        return $this->connection->prepare("select * from $this->tableName");;
+    }
+
+    public function fetchAllWithJoin($filter = "", $joinCode = "", $data = []): bool|array
     {
         $statment = $this->connection->prepare("select * from $this->tableName $joinCode $filter");
         $statment->execute($data);
@@ -36,7 +40,7 @@ class Model
 
         $placeholders = implode(",", $modifiedKeys); // :username,:password
         $statment = $this->connection->prepare("insert into $this->tableName  ($columns) values ($placeholders)");
-        return  $statment->execute($data) ? $this->lastInsertedId() : false; // terinary operator
+        return $statment->execute($data) ? $this->lastInsertedId() : false; // terinary operator
     }
 
     private function lastInsertedId()
@@ -53,6 +57,7 @@ class Model
         $statement = $this->connection->prepare("UPDATE $this->tableName SET $updatedColumns WHERE $mainColumn=:$mainColumn");
         return $statement->execute([...$data, $mainColumn => $val]);
     }
+
     public function updateById($id, $data)
     {
         return $this->update($data, "id", $id);
@@ -65,7 +70,6 @@ class Model
         $statment->execute($data);
         return $statment->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
 
     public function delete($filter, $data = [])

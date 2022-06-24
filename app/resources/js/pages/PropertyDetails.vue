@@ -98,11 +98,7 @@ export default {
   .img {
     border-radius: .5rem;
     transition: all .2s ease;
-
-    &:hover {
-      opacity: .7;
-    }
-
+    
     img {
       @include size(100%);
       border-radius: inherit;
