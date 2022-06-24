@@ -5,17 +5,20 @@ class Auth
     static private $user = null;
 
 
-    static public function check($role = null): bool
+    static public function check(array|string $role = null): bool
     {
         if (!isLoggedIn()) {
             return false;
         }
         self::$user = $_SESSION['user'];
-        if ($role && self::$user->role != $role) {
-            return false;
+        if ($role == null) {
+            return true;
+        }
+        if (is_array($role)) {
+            return in_array(self::$user->role, $role);
         }
 
-        return true;
+        return self::$user->role == $role;
     }
 
     public function login($user)

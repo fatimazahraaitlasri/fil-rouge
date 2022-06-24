@@ -35,6 +35,9 @@
     display: flex;
     gap: 1rem;
     margin-left: auto;
+    @include desktop {
+      gap: 2rem;
+    }
 
     .login {
       display: flex;
@@ -67,8 +70,9 @@
 
       @include desktop {
         font-size: 1.4rem;
-        padding: 1rem;
-        border-radius: 1.5rem;
+        padding: 1rem 2rem;
+        font-weight: 500;
+        border-radius: 3rem;
       }
 
       span {

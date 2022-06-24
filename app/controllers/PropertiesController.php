@@ -66,38 +66,62 @@ class PropertiesController
 ///properties/createProperty /POST request katakhoud data dial property
     public function create()
     {
-        if (isLoggedIn() && currentUserRole() == OWNER) {
-            $data = $_POST;
-            $isPropertyCreated = $this->propertyModel->create($data);
-            if ($isPropertyCreated) {
-//            return redirect("profile owner");
-            }
-
-            return view("propertyForm");
-
+//        if(!Auth::check(ROLE_HOST)){
+//            return redirect("/login");
+//        }
+        return view("propertyForm", ["title" => "Create Property", "action" => "#", "button" => "Create"]);
+//        if (isLoggedIn() && currentUserRole() == OWNER) {
+//            $data = $_POST;
+//            $isPropertyCreated = $this->propertyModel->create($data);
+//            if ($isPropertyCreated) {
+////            return redirect("profile owner");
+//            }
 //
-        }
+//            return view("propertyForm");
+//
+////
+//        }
     }
 
 ///properties/updateProperty/(id) Post request
 
-    public function Update($id)
+    public function update($id)
     {
-        if (!isLoggedIn()) {
-            return redirect("/login");
-        }
-        $owner = $this->UserModel->fetchById($id);
-        if (!$owner) {
-            return view("404");
-        }
-        if ($owner["id"] != currentUserId() && $owner["role"] != currentUserRole()) {
-            return redirect("/");
-        }
-        if (!isPostRequest()) {
-            return view("update", ["data" => $owner]);
-        }
-        $updateProperty = $this->propertyModel->update($_POST, "id", $owner,);
-        echo("valider");
+        //        if(!Auth::check(ROLE_HOST)){
+//            return redirect("/login");
+//        }
+
+        $apartment = (object)[
+            "id" => 1,
+            "name" => "Apartment 1",
+            "price" => 100,
+            "description" => "This is the first apartment",
+            "address" => "JL. Camplung Tanduk N 10",
+            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
+            "city" => "Paris",
+            "country" => "France",
+        ];
+
+
+        return view(
+            "propertyForm",
+            ["title" => "Update Property", "action" => "#", "button" => "Update", "data" => $apartment]
+        );
+//        if (!isLoggedIn()) {
+//            return redirect("/login");
+//        }
+//        $owner = $this->UserModel->fetchById($id);
+//        if (!$owner) {
+//            return view("404");
+//        }
+//        if ($owner["id"] != currentUserId() && $owner["role"] != currentUserRole()) {
+//            return redirect("/");
+//        }
+//        if (!isPostRequest()) {
+//            return view("update", ["data" => $owner]);
+//        }
+//        $updateProperty = $this->propertyModel->update($_POST, "id", $owner,);
+//        echo("valider");
     }
 
 ///properties/deleteProperty/(id) get request

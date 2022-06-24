@@ -4,7 +4,7 @@
         <div class="intro">
             @component("layouts.navigation", ["light" => true])
             @endcomponent
-            <form class="filter" @submit.prevent="handleSubmit">
+            <form class="filter" action="{{createLink("/properties")}}" method="get">
                 <h1 class="header">Discover new amazing places around you</h1>
                 <p class="text">
                     Donec vitae dignissim magna, viverra semper justo. Cras blandit enim blandit porta
@@ -12,7 +12,13 @@
                 </p>
                 <div class="fields">
                     <input class="city" type="text" name="address"
-                           placeholder="Search any address, zip code or city...">
+                           placeholder="Search any address, city or country...">
+                    <select name="type" id="type">
+                        <option value="">All Properties</option>
+                        @foreach(["apartment", "hotel"] as $type)
+                            <option value="{{$type}}">{{ucfirst($type)}}</option>
+                        @endforeach
+                    </select>
                     <input type="number" class="guests" placeholder="select guests" name="guests">
                     <button class="submit"><i class="far fa-search"></i></button>
                 </div>

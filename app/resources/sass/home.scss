@@ -38,6 +38,7 @@
 
     .fields {
       display: grid;
+      grid-template-columns: repeat(2, 1fr);
       row-gap: 1rem;
       @include desktop {
         row-gap: 2rem;
@@ -55,6 +56,13 @@
           outline: none;
           border-color: $border-color;
         }
+      }
+
+      select {
+        background: none;
+        appearance: auto;
+        border: none;
+        border-bottom: 1px solid rgba($border-color, .5);
       }
 
       .city {

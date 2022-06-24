@@ -1,0 +1,35 @@
+<?php
+
+class UsersController
+{
+
+    public function profile($id): bool
+    {
+        $property = (object)[
+            "id" => 1,
+            "name" => "Apartment 1",
+            "price" => 100,
+            "description" => "This is the first apartment",
+            "image" => "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80",
+            "city" => "Paris",
+            "country" => "France",
+            "owner_id" => 1,
+        ];
+
+        $user = (object)[
+            "id" => 1,
+            "name" => "John Doe",
+            "email" => "hello@gmail.com",
+            "role" => ROLE_HOST,
+            "created_at" => "2020-01-01",
+            "avatar" => "https://a0.muscache.com/im/pictures/user/77ed5bd3-8255-4829-9842-a476228e675f.jpg?aki_policy=profile_large",
+            "about" => "I am a host",
+        ];
+
+
+        return view("profile", [
+            "properties" => array_fill(0, 6, $property),
+            "user" => $user,
+        ]);
+    }
+}
