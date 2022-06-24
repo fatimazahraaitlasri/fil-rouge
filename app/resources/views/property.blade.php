@@ -18,7 +18,13 @@
 
         <div class="comments">
             <p class="title">comments</p>
-
+            <form action="{{createLink('/comments/create/'.$property->id)}}">
+                <div class="input">
+                    <label for="comment">Your Comment</label>
+                    <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+                    <button type="submit">submit</button>
+                </div>
+            </form>
             <div class="list">
                 @foreach($comments as $comment)
                     @component("components.comment", ["data" => $comment])
@@ -26,4 +32,5 @@
                 @endforeach
             </div>
         </div>
+    </div>
 @endcomponent

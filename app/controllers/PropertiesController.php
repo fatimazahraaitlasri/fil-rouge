@@ -42,31 +42,48 @@ class PropertiesController
 
 
 //        real code ==================
-        $property = $this->propertyModel->fetchById($id);
-        if (!$property) {
-            return view("404", ["message" => "Property not found"]);
-        }
-        $comments = $this->commentModel->findCommentsByPropertyId($id);
-        if ($comments) {
-            // fetch authors for each comment
-            $authorMapById = [];
-            foreach ($comments as $comment) {
-                $authorMapById[$comment->user_id] = null;
-            }
-            $authors = $this->userModel->fetchManyByFieldIn("id", array_keys($authorMapById));
-            foreach ($authors as $author) {
-                $authorMapById[$author->id] = $author;
-            }
-            foreach ($comments as $comment) {
-                $comment->author = $authorMapById[$comment->user_id];
-            }
-        }
+//        $property = $this->propertyModel->fetchById($id);
+//        if (!$property) {
+//            return view("404", ["message" => "Property not found"]);
+//        }
+//        $comments = $this->commentModel->findCommentsByPropertyId($id);
+//        $authorMapById = [$property->owner_id => null];
+//
+//        if ($comments) {
+//            // fetch authors for each comment
+//            foreach ($comments as $comment) {
+//                $authorMapById[$comment->user_id] = null;
+//            }
+//        }
+//        $authors = $this->userModel->fetchManyByFieldIn("id", array_keys($authorMapById));
+//        foreach ($authors as $author) {
+//            $authorMapById[$author->id] = $author;
+//        }
+//        foreach ($comments as $comment) {
+//            $comment->author = $authorMapById[$comment->user_id];
+//        }
+//        return view("property", [
+//            "property" => $property,
+//            "comments" => $comments,
+//            "owner" => $authorMapById[$property->owner_id],
+//        ]);
 //        real code ==================
 
 // test code ==================
+        $user = (object)[
+            "id" => 1,
+            "name" => "John Doe",
+            "email" => "hello@gmail.com",
+            "role" => ROLE_HOST,
+            "created_at" => "2020-01-01",
+            "avatar" => "https://a0.muscache.com/im/pictures/user/77ed5bd3-8255-4829-9842-a476228e675f.jpg?aki_policy=profile_large",
+            "about" => "I am a host",
+        ];
+
         $comment = (object)[
-
-
+            "id" => 1,
+            "author" => $user,
+            "content" => "This is a comment",
         ];
 
         $details = (object)[
@@ -80,11 +97,13 @@ class PropertiesController
             "name" => "hotel indigo Bali Seminyak Beach",
         ];
 
-//        test code ==================
-
         return view("property", [
             "property" => $details,
+            "comments" => array_fill(0, 5, $comment),
+            "owner" => $user,
         ]);
+//        test code ==================
+
 
     }
 
